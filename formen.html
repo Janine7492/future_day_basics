@@ -6,24 +6,78 @@
     <title>Document</title>
     <link rel="stylesheet" href="formen.css">
 </head>
-<body>
-    <h1>Klickbare und steuerbare Form</h1>
+<body id="body">
+    <h1 id="headline">Klickbare und steuerbare Form</h1>
     <div id="movable"></div>
 
     <script>
         let box = document.getElementById("movable");
+        let body = document.getElementById("body");
+        let headline = document.getElementById("headline");
         let colors = ["red", "blue", "green", "yellow", "purple"];
+        let bgColors = ["blue", "yellow", "green", "transparent"];
         let currentColorIndex = 0;
         let step = 10;
+        let clickCounter = 0;
+        let lastClickTime = Date.now();
 
         box.addEventListener("click", function() {
             currentColorIndex = (currentColorIndex + 1) % colors.length;
             box.style.backgroundColor = colors[currentColorIndex];
+            clickCounter++;
+            console.log(clickCounter);
+
+            let now = Date.now();
+            
+            if (now - lastClickTime > 3000) {
+                clickCounter = 1; // Reset Counter, wenn mehr als 5 Sekunden vergangen sind
+                lastClickTime = now;
+            }
+
+            
+
+            if (clickCounter == 10) {
+                playSound();
+                setTimeout(()=>{
+                    triggerBackgroundChange();
+                    box.classList.add('shaking');
+                    headline.classList.add('shaking');
+                clickCounter = 0; // Zurücksetzen nach Farbwechsel
+                },16000)
+                
+            }
         });
+        function playSound() {
+            const audio = new Audio('https://www.soundboard.com/track/download/462681');
+            audio.play();
+        }
+
+        function triggerBackgroundChange() {
+            headline.style.color = "red";
+            let index = 0;
+            
+
+            let interval = setInterval(() => {
+                body.style.backgroundColor = bgColors[index];
+                box.style.backgroundColor = bgColors[index==bgColors.length? 0 : index+1];
+                index++;
+                if (index >= bgColors.length) {
+                    index=0;
+                }
+            }, 1000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                body.style.backgroundColor = "white";
+                headline.style.color = "black";
+                box.classList.remove('shaking');
+                headline.classList.remove('shaking');
+            }, 14000);
+        }
 
         document.addEventListener("keydown", function(event) {
-            let currentTop = parseInt(getComputedStyle(box).top);
-            let currentLeft = parseInt(getComputedStyle(box).left);
+            let currentTop = parseInt(getComputedStyle(box).top) || 0;
+            let currentLeft = parseInt(getComputedStyle(box).left) || 0;
             
             switch(event.key) {
                 case "ArrowUp":
