@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="formen.css">
+</head>
+<body>
+    <h1>Klickbare und steuerbare Form</h1>
+    <div id="movable"></div>
+
+    <script>
+        let box = document.getElementById("movable");
+        let colors = ["red", "blue", "green", "yellow", "purple"];
+        let currentColorIndex = 0;
+        let step = 10;
+
+        box.addEventListener("click", function() {
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            box.style.backgroundColor = colors[currentColorIndex];
+        });
+
+        document.addEventListener("keydown", function(event) {
+            let currentTop = parseInt(getComputedStyle(box).top);
+            let currentLeft = parseInt(getComputedStyle(box).left);
+            
+            switch(event.key) {
+                case "ArrowUp":
+                    box.style.top = `${currentTop - step}px`;
+                    break;
+                case "ArrowDown":
+                    box.style.top = `${currentTop + step}px`;
+                    break;
+                case "ArrowLeft":
+                    box.style.left = `${currentLeft - step}px`;
+                    break;
+                case "ArrowRight":
+                    box.style.left = `${currentLeft + step}px`;
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Karte</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #card {
+            width: 250px;
+            padding: 20px;
+            border: 2px solid black;
+            border-radius: 10px;
+            display: inline-block;
+            background-color: lightgray;
+            margin-bottom: 20px;
+        }
+        img { width: 100px; }
+        button { margin: 5px; padding: 10px; font-size: 1em; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Pokémon-Karte</h1>
+    <div id="card">
+        <h2 id="name">???</h2>
+        <img id="image" src="" alt="Pokémon">
+        <p id="id">ID: ???</p>
+        <p id="size">Größe: ???</p>
+        <p id="weight">Gewicht: ???</p>
+        <p id="moves">Attacken: ???</p>
+    </div>
+    <button onclick="loadNextPokemon()">Nächstes Pokémon</button>
+    <button onclick="loadRandomPokemon()">Zufälliges Pokémon</button>
+
+    <script>
+        let currentPokemonId = 1;
+
+        function loadPokemon(id) {
+            fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("name").textContent = data.name.toUpperCase();
+                    document.getElementById("image").src = data.sprites.front_default;
+                    document.getElementById("id").textContent = `ID: ${data.id}`;
+                    document.getElementById("size").textContent = `Größe: ${data.height / 10} m`;
+                    document.getElementById("weight").textContent = `Gewicht: ${data.weight / 10} kg`;
+                    
+                    let moves = data.moves.slice(0, 3).map(move => move.move.name).join(", ");
+                    document.getElementById("moves").textContent = `Attacken: ${moves || "Keine Daten"}`;
+                })
+                .catch(error => console.error("Fehler beim Laden des Pokémon", error));
+        }
+
+        function loadNextPokemon() {
+            loadPokemon(currentPokemonId);
+            currentPokemonId++;
+        }
+
+        function loadRandomPokemon() {
+            let randomId = Math.floor(Math.random() * 898) + 1; // Es gibt 898 Pokémon in der API
+            loadPokemon(randomId);
+            currentPokemonId = randomId+1;
+        }
+
+        loadNextPokemon(); // Erstes Pokémon laden
+    </script>
+</body>
+</html>

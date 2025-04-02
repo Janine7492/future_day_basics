@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="zaehler.css">
+</head>
+<body>
+    <h1>Lass uns zählen! </h1>
+    
+    <p id="counter">0</p>
+    <button onclick="decreaseCounter()">-</button>
+    <button onclick="increaseCounter()">+</button>
+
+    <script>
+        let count = 0;
+
+        function increaseCounter() {
+            count++;
+            document.getElementById('counter').textContent = count;
+        }
+
+        function decreaseCounter() {
+            count--;
+            document.getElementById('counter').textContent = count;
+        }
+    </script>
+
+</body>
+</html>

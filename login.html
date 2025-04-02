@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <h1>Login</h1>
+    <form onsubmit="return loginUser(event)">
+        <input type="text" id="username" placeholder="Benutzername" required>
+        <input type="password" id="password" placeholder="Passwort" required>
+        <button type="submit">Einloggen</button>
+    </form>
+    <p id="message"></p>
+    <p id="welcome"></p>
+
+    <script>
+        function loginUser(event) {
+            event.preventDefault();
+            let username = document.getElementById("username").value;
+            document.getElementById('message').textContent = "Erfolgreich eingeloggt";
+            document.getElementById('welcome').textContent = `Willkommen ${username}!`;
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 5000);
+        }
+    </script>
+</body>
+</body>
+</html>
